@@ -1,10 +1,12 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Canvas_Manager : MonoBehaviour
 {
-    public Stat myLife = new Stat("Life", 100);
+    public TextMeshProUGUI statText;
     public Image lifeImage;
+    public Stat myLife = new Stat("Life", 100);
     private void Start()
     {
         myLife.OnStatChanced += MyLife_OnStatChanced;
@@ -13,6 +15,7 @@ public class Canvas_Manager : MonoBehaviour
     private void MyLife_OnStatChanced(object sender, System.EventArgs e)
     {
         lifeImage.fillAmount = myLife.StatValue * 1.0f / myLife.ReturnStatCore();
+        statText.text = myLife.ReturnStatStatus();
     }
     public void AddLife()
     {
