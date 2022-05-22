@@ -1,20 +1,43 @@
-﻿using UnityEngine;
+﻿using UnityEngine.UI;
 
+[System.Serializable]
+public class StatBar
+{
+    public Stat stat1;
+    public Stat stat2;
+    public Image resim;
+    public StatBar(Stat stat1, Stat stat2, Image resim)
+    {
+        this.stat1 = stat1;
+        this.stat2 = stat2;
+        this.resim = resim;
+        stat1.OnStatChanced += S_OnStatChanced;
+        stat2.OnStatChanced += S_OnStatChanced;
+    }
+    private void S_OnStatChanced(object sender, System.EventArgs e)
+    {
+        resim.fillAmount = stat1.StatValue * 1.0f / stat2.StatValue;
+    }
+}
 [System.Serializable]
 public class Stat
 {
     /// <summary>
-    /// Stat değiştiğinde ilgili eklenmiş fonksiyonları aktif eder.
+    /// Activates related added functions when stat changes.
     /// </summary>
     public event System.EventHandler OnStatChanced;
+    // For some stat, like armor, power etc.
     public Stat(string statName)
     {
         this.statName = statName;
+        CalculateStatValue();
     }
+    // For some stat, like life, lifeMax etc.
     public Stat(string statName, int myStatCore)
     {
         this.statName = statName;
         this.myStatCore = myStatCore;
+        CalculateStatValue();
     }
     public string statName;
     private int myStatCore;
@@ -24,6 +47,7 @@ public class Stat
     private int statAddYuzde;
     private int statRemove;
     private int statRemoveYuzde;
+
     public void SetStatCore(int set)
     {
         myStatCore = set;
@@ -94,9 +118,6 @@ public class Stat
     {
         return statAdd + (int)(myStatCore * statAddYuzde * 0.01);
     }
-    /// <summary>
-    /// Learn Stat Status
-    /// </summary>
     public string ReturnStatStatus()
     {
         return statName + " : " + StatValue +
@@ -110,6 +131,9 @@ public class Stat
     {
         return statRemove + (int)(myStatCore * statRemoveYuzde * 0.01);
     }
+    /// <summary>
+    /// Learn Stat Status
+    /// </summary>
     public void ClearStat()
     {
         statAdd = 0;

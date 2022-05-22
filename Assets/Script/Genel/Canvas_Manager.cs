@@ -5,40 +5,37 @@ using UnityEngine.UI;
 public class Canvas_Manager : MonoBehaviour
 {
     public TextMeshProUGUI statText;
-    public Image lifeImage;
-    public Stat myLife = new Stat("Life", 100);
-    private void Start()
+    [SerializeField] private Image resim;
+    private Stat lifeMax = new Stat("LifeMax", 200);
+    private Stat life = new Stat("Life", 100);
+    private StatBar lifeBar;
+    private void Awake()
     {
-        myLife.OnStatChanced += MyLife_OnStatChanced;
-        myLife.RemoveStat(50);
-    }
-    private void MyLife_OnStatChanced(object sender, System.EventArgs e)
-    {
-        lifeImage.fillAmount = myLife.StatValue * 1.0f / myLife.ReturnStatCore();
-        statText.text = myLife.ReturnStatStatus();
+        lifeBar = new StatBar(life, lifeMax, resim);
+        life.RemoveStat(50);
     }
     public void AddLife()
     {
-        myLife.AddStat(10);
+        life.AddStat(10);
     }
     public void RemoveLife()
     {
-        myLife.RemoveStat(10);
+        life.RemoveStat(10);
     }
     public void AddYuzdeLife()
     {
-        myLife.AddYuzdeStat(10);
+        life.AddYuzdeStat(10);
     }
     public void RemoveYuzdeLife()
     {
-        myLife.RemoveYuzdeStat(10);
+        life.RemoveYuzdeStat(10);
     }
     public void AddLifeCore()
     {
-        myLife.SetStatCore(myLife.ReturnStatCore() + 10);
+        life.SetStatCore(life.ReturnStatCore() + 10);
     }
     public void RemoveLifeCore()
     {
-        myLife.SetStatCore(myLife.ReturnStatCore() - 10);
+        life.SetStatCore(life.ReturnStatCore() - 10);
     }
 }
